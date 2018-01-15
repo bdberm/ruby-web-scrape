@@ -2,7 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'byebug'
 
-SEARCH_TERMS = ['smart tv', 'curved smart tv']
+SEARCH_TERMS = ['smart tv','smart television', 'curved smart tv', 'curved smart television']
 MAX_RESULTS_PER_PAGE = 24
 URL_START = "https://www.bestbuy.com/site/searchpage.jsp?cp="
 URL_MID = "&searchType=search&st="
@@ -29,11 +29,13 @@ SEARCH_TERMS.each do |search_term|
 
     list_items.each do |list_item|
       brand_content = list_item.attribute('data-brand').content
+      #Geek Squad Listings do not have brand content, part of Best Buy.
+      #Have chosen to exclude from analysis and not save to result db
       brand = brand_content.index(":") ? brand_content[brand_content.index(":")+2..-3] : nil
       title = list_item.attribute('data-title').content
       num_ratings = list_item.attribute('data-review-count').content.to_i
       average_rating = list_item.attribute('data-average-rating').content.to_f
-      #Geek Squad Listings do not have brand content, part of Best Buy
+
       puts(rank.to_s + ": " + brand) if brand
       rank += 1
     end

@@ -4,5 +4,5 @@ CREATE TABLE best_buy_rankings (
   search_time VARCHAR(255) NOT NULL,
   search_rank INTEGER NOT NULL,
   brand VARCHAR(255) NOT NULL,
-  page INTEGER NOT NULL
+  page_num INTEGER NOT NULL
 );
