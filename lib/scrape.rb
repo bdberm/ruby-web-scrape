@@ -6,7 +6,7 @@ require_relative 'save_to_db.rb'
 
 
 
-SEARCH_TERMS = ['smart tv','smart television', 'curved smart tv', 'curved smart television']
+SEARCH_TERMS = ['smart tv', 'curved smart tv']
 MAX_RESULTS_PER_PAGE = 24
 URL_START = "https://www.bestbuy.com/site/searchpage.jsp?cp="
 URL_MID = "&searchType=search&st="
@@ -20,7 +20,10 @@ def best_buy_scrape
   SEARCH_TERMS.each do |search_term|
 
     search_url = URL_START + 1.to_s + URL_MID + search_term.split.join("+") + URL_END
+
     doc = Nokogiri::HTML(open(search_url))
+
+
     search_time = DateTime.now.strftime("%Y/%m/%d, %H:%M:%S")
 
 
@@ -32,6 +35,7 @@ def best_buy_scrape
     rank = 1
 
     (1..num_pages).each do |page_num|
+
       search_url = URL_START + page_num.to_s + URL_MID + search_term.split.join("+") + URL_END
       doc = Nokogiri::HTML(open(search_url))
       list_items = doc.css('.list-item')
@@ -53,9 +57,8 @@ def best_buy_scrape
 
     end
   end
+
   db.close
 end
 
 best_buy_scrape
-
-# puts(save_new_ranking(DB, "test", DateTime.now.strftime("%Y/%-m/%-d, %H:%M:%S") , 1, "sony", 1 ))
