@@ -2,14 +2,9 @@ require 'open-uri'
 require 'nokogiri'
 require 'byebug'
 require 'sqlite3'
+require_relative 'save_to_db.rb'
 
-def save_new_ranking(db, search_term, search_time, search_rank, brand, page_num)
-  db.execute(<<-SQL, search_term, search_time, search_rank, brand, page_num)
-    INSERT INTO best_buy_rankings (search_term, search_time, search_rank, brand, page_num)
-    VALUES (?,?,?,?,?)
 
-  SQL
-end
 
 SEARCH_TERMS = ['smart tv','smart television', 'curved smart tv', 'curved smart television']
 MAX_RESULTS_PER_PAGE = 24
@@ -55,6 +50,6 @@ DB = SQLite3::Database.open('lib/db_files/best_buy_rankings.db')
 #   end
 # end
 
-puts(save_new_ranking(DB, "test", DateTime.now.strftime("%Y/%-m/%-d") , 1, "sony", 1 ))
+puts(save_new_ranking(DB, "test", DateTime.now.strftime("%Y/%-m/%-d, %H:%M:%S") , 1, "sony", 1 ))
 
 DB.close
