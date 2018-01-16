@@ -3,13 +3,21 @@ require 'nokogiri'
 require 'byebug'
 require 'sqlite3'
 
+def save_new_ranking(db, search_term, search_time, search_rank, brand, page_num)
+  db.execute(<<-SQL, search_term, search_time, search_rank, brand, page_num)
+    INSERT INTO best_buy_rankings (search_term, search_time, search_rank, brand, page_num)
+    VALUES (?,?,?,?,?)
+
+  SQL
+end
+
 SEARCH_TERMS = ['smart tv','smart television', 'curved smart tv', 'curved smart television']
 MAX_RESULTS_PER_PAGE = 24
 URL_START = "https://www.bestbuy.com/site/searchpage.jsp?cp="
 URL_MID = "&searchType=search&st="
 URL_END ="&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All%20Categories&ks=960&keys=keys"
 
-db = SQLite3::Database.open('lib/db_files/best_buy_rankings.db')
+DB = SQLite3::Database.open('lib/db_files/best_buy_rankings.db')
 
 
 
@@ -46,3 +54,7 @@ db = SQLite3::Database.open('lib/db_files/best_buy_rankings.db')
 #
 #   end
 # end
+
+puts(save_new_ranking(DB, "test", DateTime.now.strftime("%Y/%-m/%-d") , 1, "sony", 1 ))
+
+DB.close
