@@ -5,13 +5,11 @@ require 'sqlite3'
 require_relative 'save_to_db.rb'
 
 
-
 SEARCH_TERMS = ['smart tv', 'curved smart tv']
 MAX_RESULTS_PER_PAGE = 24
 URL_START = "https://www.bestbuy.com/site/searchpage.jsp?cp="
 URL_MID = "&searchType=search&st="
 URL_END ="&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All%20Categories&ks=960&keys=keys"
-
 
 
 def best_buy_scrape
@@ -23,14 +21,10 @@ def best_buy_scrape
 
     doc = Nokogiri::HTML(open(search_url))
 
-
     search_time = DateTime.now.strftime("%Y/%m/%d, %H:%M:%S")
-
-
     count = doc.at_css('.count').content[1...-1].to_i
     last_page_remainder = count % MAX_RESULTS_PER_PAGE
     num_pages = last_page_remainder != 0 ? count / MAX_RESULTS_PER_PAGE + 1 : count / MAX_RESULTS_PER_PAGE
-
 
     rank = 1
 
@@ -48,8 +42,6 @@ def best_buy_scrape
         title = list_item.attribute('data-title').content
         num_ratings = list_item.attribute('data-review-count').content.to_i
         average_rating = list_item.attribute('data-average-rating').content.to_f
-
-
         save_new_ranking(db, search_term, search_time, rank, brand, page_num, num_ratings, average_rating) if brand
         rank += 1
       end
