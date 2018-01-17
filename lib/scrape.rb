@@ -50,7 +50,6 @@ def best_buy_scrape
         average_rating = list_item.attribute('data-average-rating').content.to_f
 
 
-        # puts(rank.to_s + ": " + brand) if brand
         save_new_ranking(db, search_term, search_time, rank, brand, page_num, num_ratings, average_rating) if brand
         rank += 1
       end
