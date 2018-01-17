@@ -28,3 +28,11 @@ end
 ```
 
 The script iterates through all the pages of search results which it calculates by grabbing the number of results off the first page.
+
+## Instructions for Running the Scrape
+
+After cloning the repo, first navigate to the root directory and execute the command `bundle install` to install the sqlite3 and Nokogiri libraries.
+
+If it's your first time running the script you will first need to create the database. To do so navigate to the root directory and run the command `cat lib/db_files/create_best_buy_rankings.sql | sqlite3 lib/db_files/best_buy_rankings.db`.
+
+The scrape can be run at any time from the command line. Navigate to the root directory and run the command `ruby lib/scrape.rb`. This will run the scrape for any search terms included in the `SEARCH_TERMS` constant in the `lib/scrape.rb` file.
